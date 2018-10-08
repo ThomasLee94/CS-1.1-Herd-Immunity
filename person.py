@@ -1,5 +1,7 @@
+# Project: Herd Immunity
+# Name: Thomas J. Lee
+
 import random
-# TODO: Import the virus class
 import Virus
 
 class Person(object):
@@ -46,13 +48,12 @@ class Person(object):
         '''
 
         survival_rate = randint(0,1)
-        if self.infected not None:
-            if survival_rate < mortality_rate:
-                self.is_alive = False
-                return False
-            else:
-                self.is_vaccinated = True
-                self.infected = None
-                return True
+        
+        if survival_rate < infected.mortality_rate:
+            self.is_alive = False
+            return False
         else:
-            return None
+            self.is_vaccinated = True
+            self.infected = None
+            return True
+        

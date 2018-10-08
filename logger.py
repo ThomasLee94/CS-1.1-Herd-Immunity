@@ -1,3 +1,6 @@
+# Project: Herd Immunity
+# Name: Thomas J. Lee
+
 class Logger(object):
     '''
     Utility class responsible for logging all interactions of note during the

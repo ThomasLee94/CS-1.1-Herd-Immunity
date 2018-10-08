@@ -1,3 +1,6 @@
+# Project: Herd Immunity
+# Name: Thomas J. Lee
+
 class Virus(object):
     # NOTE # *Properties and Attributes of the virus used in the Simulation
 
