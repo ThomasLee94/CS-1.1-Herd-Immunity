@@ -73,17 +73,17 @@ class Logger(object):
 
     def log_interaction(self, person1, person2, did_infect=None,
                         person2_vacc=None, person2_sick=None):
-        # TODO: Finish this method.  The Simulation object should use this method to
-        # log every interaction a sick individual has during each time step.  This method
-        # should accomplish this by using the information from person1 (the infected person),
-        # person2 (the person randomly chosen for the interaction), and the optional
-        # keyword arguments passed into the method.  See documentation for more info
-        # on the format of the logs that this method should write.
-        # NOTE:  You'll need to think
-        # about how the booleans passed (or not passed) represent
-        # all the possible edge cases!
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
-        # event logged ends up on a separate line!
+        # * The Simulation object should use this method to
+        # * log every interaction a sick individual has during each time step.  This method
+        # * should accomplish this by using the information from person1 (the infected person),
+        # * person2 (the person randomly chosen for the interaction), and the optional
+        # * keyword arguments passed into the method.  See documentation for more info
+        # * on the format of the logs that this method should write.
+        # * NOTE:  You'll need to think
+        # * about how the booleans passed (or not passed) represent
+        # * all the possible edge cases!
+        # * NOTE: Make sure to end every line with a '/n' character to ensure that each
+        # * event logged ends up on a separate line!
         pass
 
     def log_infection_survival(self, person, did_die_from_infection):

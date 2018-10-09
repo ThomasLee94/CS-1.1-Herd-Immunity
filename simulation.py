@@ -20,29 +20,23 @@ class Simulation(object):
     def __init__(self, population_size, vacc_percentage, initial_infected=1,virus_name, mortality_rate, repro_rate):
         self.population_size = population_size
         self.population = []
+
         self.total_infected = 0
         self.current_infected = 0
+        self.initial_infected = initial_infected
+
         self.next_person_id = 0
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
             virus_name, population_size, vacc_percentage, initial_infected)
+
         self.newly_infected = []
 
         # * Creating Virus object
         self.virus = Virus(virus_name, mortality_rate, repro_rate)
 
-        # * Create a Logger object and bind it to self.logger.  You should use this
-        # * logger object to log all events of any importance during the simulation.  Don't forget
-        # * to call these logger methods in the corresponding parts of the simulation!
-        self.logger = None
+        # * Create a Logger object and bind it to self.logger.  
+        self.logger = Logger(self.file_name)
 
-        # This attribute will be used to keep track of all the people that catch
-        # the infection during a given time step. We'll store each newly infected
-        # person's .ID attribute in here.  At the end of each time step, we'll call
-        # self._infect_newly_infected() and then reset .newly_infected back to an empty
-        # list.
-        self.newly_infected = []
-        # TODO: Call self._create_population() and pass in the correct parameters.
-        # Store the array that this method will return in the self.population attribute.
 
     def _create_population(self, initial_infected, pop_size):
         # * Call this method to populate the "population". 
@@ -90,8 +84,6 @@ class Simulation(object):
         for person_obj in self.population:
             if person_obj.infected is not None:
                 infected_counter += 1
-        
-        for person_obj in self.population:
             if person_obj.is_alive == False:
                 dead_counter += 1
       
@@ -111,18 +103,24 @@ class Simulation(object):
         # ! Use the logger's log_time_step() method at the end of each step and pass in the 
         # ! time_step_counter variable!
 
+        population = self.population
+        create_population = self._create_population(self.initial_infected, self.population_size)
+        population = create_population
+
         time_step_counter = 0
         should_continue = self._simulation_should_continue()
 
         while should_continue:
+            # Run simulation and increment time_step_counter.
+            self.time_step()
+            time_step_counter += 1
+            self.logger.log_time_step(time_step_counter)
+            should_continue = self._simulation_should_continue()
 
-        # TODO: for every iteration of this loop, call self.time_step() to compute another
-        # round of this simulation.  At the end of each iteration of this loop, remember
-        # to rebind should_continue to another call of self._simulation_should_continue()!
-            pass
         print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
 
     def time_step(self):
+        # ! This is the interaction between 100 people. 
         # * This method contains the logic for computing one time step in the simulation.
         # * This includes:
         # *     For each infected person in the population:
@@ -134,9 +132,19 @@ class Simulation(object):
         # *             - Call simulation.interaction(person, random_person). 
         # *             - Increment interaction counter by 1.
 
-        for person_obj in self.population:
-            if person_obj.infected:
+        interaction_counter = 1
 
+        for person_obj in self.population:
+            # Person must have and infected and be alive.
+            if person_obj.infected is not None and person_obj.is_alive == True:
+                while interaction_counter <= 100:
+                    random_person = random.choice(self.population)
+                    # Random person cannot interact with dead people or himself.
+                    if random_person.is_alive == False or person_obj._id == random_person._id:
+                        random_person = random.choice(self.population)
+                    else:
+                        self.interaction(person_obj, random_person)
+                        interaction_counter += 1
 
     def interaction(self, person, random_person):
         # * This method will be called any time two living people are selected for an 
