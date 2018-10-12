@@ -2,11 +2,11 @@
 # Name: Thomas J. Lee
 
 import random
-import Virus
+from virus import Virus
 
 class Person(object):
 
-    def __init__(self, _id, is_vaccinated, infected=None, file_name2):
+    def __init__(self, _id, is_vaccinated, infected=None):
         # * If a person is infected for the first round of simulation, the object
         # * should create a Virus object for self.infection. Otherwise, self.infection
         # * should be set to None.
@@ -29,13 +29,13 @@ class Person(object):
         self.infected = infected
 
 
-    def did_survive_infection(self, mortality_rate):
+    def did_survive_infection(self):
         # * for resolve_infection.  If person dies, set is_alive to False and return False.
         # * If person lives, set is_vaccinated = True, infected = None, return True. 
 
-        survival_rate = randint(0,1)
+        survival_rate = random.randint(0,1)
         
-        if survival_rate < infected.mortality_rate:
+        if survival_rate < self.infected.mortality_rate:
             self.is_alive = False
             return False
         else:
