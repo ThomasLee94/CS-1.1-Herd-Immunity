@@ -6,7 +6,7 @@ import Virus
 
 class Person(object):
 
-    def __init__(self, _id, is_vaccinated, infected=None):
+    def __init__(self, _id, is_vaccinated, infected=None, file_name2):
         # * If a person is infected for the first round of simulation, the object
         # * should create a Virus object for self.infection. Otherwise, self.infection
         # * should be set to None.
