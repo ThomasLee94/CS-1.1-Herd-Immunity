@@ -90,10 +90,13 @@ class Simulation(object):
         print(dead_counter)
         print('__________________________')
 
-        if dead_counter == self.total_infected:
-            simulation_status = False
-        if dead_counter == len(self.population):
-            simulation_status = False
+        # while self.total_infected < len(self.population):
+        while self.total_infected < len(self.population):
+            if dead_counter == self.total_infected:
+                simulation_status = False
+            if dead_counter == len(self.population) - 1:
+                simulation_status = False
+        
 
         return simulation_status
 
@@ -161,7 +164,7 @@ class Simulation(object):
             self.logger.log_interaction(person_obj, random_person, False, True, False)
         if random_person.infected is not None:
             self.logger.log_interaction(person_obj, random_person, False, False, True)
-        else:
+        if random_person.infected is None:
             survival_rate =  random.randint(0,1)
             if survival_rate < self.basic_repro_num:
                 self.newly_infected.append(random_person._id)
