@@ -33,7 +33,7 @@ class Person(object):
         # * for resolve_infection.  If person dies, set is_alive to False and return False.
         # * If person lives, set is_vaccinated = True, infected = None, return True. 
 
-        survival_rate = random.randint(0,1)
+        survival_rate = random.uniform(0,1)
         
         if survival_rate < self.infected.mortality_rate:
             self.is_alive = False

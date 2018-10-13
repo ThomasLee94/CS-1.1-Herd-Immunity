@@ -61,7 +61,7 @@ class Simulation(object):
                 # * If this number is smaller than vacc_percentage, this person should be instantiated
                 # * as a vaccinated one. Else, this person is unvaccinated.
 
-                survival_rate = random.randint(0,1)
+                survival_rate = random.uniform(0,1)
                 if survival_rate < vacc_percentage:
                     not_infected_person = Person(self.next_person_id, True)
                 else:
@@ -85,18 +85,21 @@ class Simulation(object):
             if person_obj.is_alive == False:
                 dead_counter += 1
 
-        print(len(self.population))
-        print(self.total_infected)
-        print(dead_counter)
-        print('__________________________')
-
-        # while self.total_infected < len(self.population):
-        while self.total_infected < len(self.population):
+        if self.total_infected < len(self.population):
+            print("total infected in if statement: {}".format(self.total_infected))
+            print("total population in if statement: {}".format(len(self.population)))
+            print("*****************************************************")
             if dead_counter == self.total_infected:
                 simulation_status = False
             if dead_counter == len(self.population) - 1:
-                simulation_status = False
-        
+                simulation_status = False   
+        else:
+            simulation_status = False
+
+        print("Total population: {}".format(len(self.population)))
+        print("Total Infected: {}".format(self.total_infected))
+        print("Total dead people: {}".format(dead_counter))
+        print('__________________________')
 
         return simulation_status
 
@@ -133,13 +136,19 @@ class Simulation(object):
 
         interaction_counter = 1
         for person_obj in self.population:
+            # * If person is alive and not infected
             if person_obj.infected is not None and person_obj.is_alive:
+                # * Condition for 100 interactions
                 while interaction_counter <= 100:
+                    # * Picking random person
                     random_person = random.choice(self.population)
-                    if random_person._id != person_obj._id and random_person.is_alive:
-                    # person cannot interact with dead people or himself.
+                    # * If random person is not the same as person_obj, random peron is alive and random person is not infected
+                    if random_person._id != person_obj._id and random_person.is_alive and random_person.infected == None:
                         self.interaction(person_obj, random_person)
                         interaction_counter += 1
+                    else:
+                        random_person = random.choice(self.population)
+
         self._infect_newly_infected()
                     
     def interaction(self, person_obj, random_person):
@@ -165,7 +174,7 @@ class Simulation(object):
         if random_person.infected is not None:
             self.logger.log_interaction(person_obj, random_person, False, False, True)
         if random_person.infected is None:
-            survival_rate =  random.randint(0,1)
+            survival_rate =  random.uniform(0,1)
             if survival_rate < self.basic_repro_num:
                 self.newly_infected.append(random_person._id)
                 self.logger.log_interaction(person_obj, random_person, False, False, False)
