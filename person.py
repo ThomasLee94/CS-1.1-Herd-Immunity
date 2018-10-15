@@ -35,7 +35,7 @@ class Person(object):
 
         survival_rate = random.uniform(0,1)
         
-        if survival_rate < self.infected.mortality_rate:
+        if survival_rate <= self.infected.mortality_rate:
             self.is_alive = False
             return False
         else:
